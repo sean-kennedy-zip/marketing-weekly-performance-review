@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Weekly Review — W3 Q2 FY27</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy: #1e293b;
+    --green: #639922; --green-bg: #eaf3de;
+    --amber: #BA7517; --amber-bg: #faeeda;
+    --red: #E24B4A;   --red-bg: #fcebeb;
+    --blue: #185FA5;  --blue-bg: #e6f1fb;
+    --gray: #888780;  --gray-bg: #f1efe8;
+    --teal: #0F6E56;  --teal-bg: #e1f5ee;
+    --text: #1e293b;  --muted: #64748b;
+    --border: rgba(0,0,0,0.1);
+    --surface: #f8fafc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; color: var(--text); background: #f0f4f8; }
+  .page { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
+
+  /* Header */
+  .header { background: var(--navy); color: #fff; padding: 20px 24px; border-radius: 0 0 12px 12px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .header h1 { font-size: 20px; font-weight: 600; }
+  .header p { font-size: 13px; color: #94a3b8; margin-top: 2px; }
+  .header-meta { text-align: right; font-size: 12px; color: #94a3b8; line-height: 1.8; }
+
+  /* Sections */
+  .section { margin-bottom: 28px; }
+  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* Cards */
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
+  .card + .card { margin-top: 12px; }
+
+  /* KPI grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .kpi { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .kpi-label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .kpi-value { font-size: 28px; font-weight: 600; line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .kpi-pct { font-size: 13px; font-weight: 600; }
+
+  /* Progress bar */
+  .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .prog-label { width: 130px; font-size: 13px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .prog-track { flex: 1; background: #e2e8f0; border-radius: 4px; height: 10px; position: relative; }
+  .prog-fill { height: 10px; border-radius: 4px; transition: width 0.3s; }
+  .prog-stat { width: 120px; font-size: 12px; color: var(--muted); text-align: right; flex-shrink: 0; }
+  .prog-pct { display: inline-block; font-weight: 600; font-size: 12px; margin-left: 6px; }
+
+  /* Conversion table */
+  .conv-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .conv-table th { text-align: left; padding: 6px 8px; font-size: 11px; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .conv-table td { padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.05); vertical-align: middle; }
+  .conv-table tr:last-child td { border-bottom: none; }
+  .flag-red { background: var(--red-bg); color: #991b1b; border-radius: 4px; padding: 1px 5px; font-weight: 600; font-size: 11px; }
+  .flag-amber { background: var(--amber-bg); color: #92400e; border-radius: 4px; padding: 1px 5px; font-weight: 600; font-size: 11px; }
+  .flag-green { background: var(--green-bg); color: #3b6d11; border-radius: 4px; padding: 1px 5px; font-weight: 600; font-size: 11px; }
+  .flag-neutral { color: var(--muted); font-size: 11px; padding: 1px 5px; }
+
+  /* S0 table */
+  .s0-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .s0-table th { text-align: left; padding: 7px 10px; font-size: 11px; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .s0-table td { padding: 7px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .s0-table tr:last-child td { font-weight: 600; border-top: 1px solid var(--border); border-bottom: none; }
+  .badge { display: inline-block; border-radius: 4px; padding: 1px 6px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: var(--green-bg); color: var(--teal); }
+  .badge-red { background: var(--red-bg); color: #991b1b; }
+  .badge-gray { background: var(--gray-bg); color: var(--gray); }
+
+  /* Motion grid */
+  .motion-segment { margin-bottom: 20px; }
+  .motion-seg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .motion-seg-name { font-size: 14px; font-weight: 600; }
+  .motion-seg-total { font-size: 12px; color: var(--muted); }
+  .motion-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+  .motion-row { display: flex; flex-direction: column; gap: 3px; }
+  .motion-row-label { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; }
+  .motion-track { height: 8px; background: #e2e8f0; border-radius: 4px; position: relative; }
+  .motion-fill { height: 8px; border-radius: 4px; }
+  .benchmark-line { position: absolute; top: -2px; bottom: -2px; width: 2px; background: rgba(0,0,0,0.2); border-radius: 1px; }
+
+  /* Accordion */
+  .channel-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+  .channel-head { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .channel-head:hover { background: var(--surface); }
+  .ch-name { font-size: 14px; font-weight: 600; }
+  .ch-meta { display: flex; gap: 12px; align-items: center; }
+  .ch-s1 { font-size: 13px; color: var(--muted); }
+  .ch-pct-badge { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+  .chevron { font-size: 16px; color: var(--muted); transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+  .channel-body { padding: 0 16px 14px; font-size: 13px; line-height: 1.7; color: #374151; display: none; border-top: 1px solid var(--border); }
+  .channel-body.open { display: block; }
+
+  /* Chart containers */
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* Headlines */
+  .headline-list { list-style: none; }
+  .headline-list li { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 13px; line-height: 1.6; color: #374151; }
+  .headline-list li:last-child { border-bottom: none; }
+  .hl-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+
+  /* Legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; font-size: 12px; color: var(--muted); }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* Note */
+  .note { font-size: 11px; color: var(--muted); margin-top: 10px; font-style: italic; }
+
+  /* Insight box */
+  .insight { background: var(--surface); border-left: 3px solid var(--navy); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 12px; font-size: 13px; line-height: 1.6; color: #374151; }
+  .insight strong { color: var(--text); }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  @media (max-width: 600px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .motion-rows { grid-template-columns: 1fr; }
+    .prog-label { width: 90px; }
+    .prog-stat { width: 90px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div>
+    <h1>Marketing weekly review</h1>
+    <p>Week 3 of 13 &nbsp;·&nbsp; Q2 FY27 &nbsp;·&nbsp; Marketing-attributed S1s</p>
+  </div>
+  <div class="header-meta">
+    <div>As of May 21, 2026</div>
+    <div>23% of quarter elapsed</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 1: LEADERSHIP SUMMARY ===== -->
+<div class="section">
+  <div class="section-label">Section 1 — Leadership summary</div>
+
+  <!-- KPI cards -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">QTD S1s (mktg)</div>
+      <div class="kpi-value">77</div>
+      <div class="kpi-sub">vs. Q2 target: 412</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">vs. pro-rated target</div>
+      <div class="kpi-value" style="color: var(--amber);">81%</div>
+      <div class="kpi-sub">95 expected at week 3</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">vs. forecast (372)</div>
+      <div class="kpi-value" style="color: var(--amber);">90%</div>
+      <div class="kpi-sub">86 expected at week 3</div>
+    </div>
+  </div>
+
+  <!-- Weekly trend -->
+  <div class="card" style="margin-top: 12px;">
+    <div style="font-size: 13px; font-weight: 600; margin-bottom: 12px;">Weekly S1 trend</div>
+    <div class="chart-wrap" style="height: 160px;">
+      <canvas id="trendChart" role="img" aria-label="Weekly S1 trend bar chart. W1: 4, W2: 20, W3: 32, W4 partial: 21.">S1s by week — W1: 4, W2: 20, W3: 32, W4 (partial through Thu): 21. Q2 total: 77.</canvas>
+    </div>
+    <p class="note" style="margin-top: 6px;">W4 = Mon–Thu only; Friday still outstanding. Trajectory: 4 → 20 → 32 over completed weeks.</p>
+  </div>
+
+  <!-- Headlines -->
+  <div class="card" style="margin-top: 12px;">
+    <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Headlines</div>
+    <ul class="headline-list">
+      <li><span class="hl-dot" style="background: var(--amber);"></span>Pacing is accelerating (4 → 20 → 32 over completed weeks) and W4 is already at 21 with Friday ahead — but at 81% vs. target the team is behind where it needs to be. July will be structurally slower due to AE vacations and fewer events, so May and June need to run at 100%+ to build a buffer.</li>
+      <li><span class="hl-dot" style="background: var(--red);"></span>SAL→S0 is declining across multiple channels simultaneously — Tradeshow (−29% 🔴), GSearch (−24% 🔴), LinkedIn (−33% 🔴), Field Event (−20% 🔴). This is an MDR throughput issue, not individual channel dynamics. MDR leadership should audit sequence capacity and confirm post-event lists are being processed at pace with volume.</li>
+      <li><span class="hl-dot" style="background: var(--blue);"></span><strong>Forward pipeline:</strong> 66 future-meeting S0s represent ~23 near-term S1s at historical conversion rates, but 62 past-due S0s need disposition — cross-channel cleanup required. See Section 5 for the full breakdown.</li>
+      <li><span class="hl-dot" style="background: var(--red);"></span>NAMER Key is the clearest segment gap at 63% pacing with no single channel carrying it. NAMER Commercial also behind at 76%. See Section 3.</li>
+      <li><span class="hl-dot" style="background: var(--green);"></span>Content supply chain replenishing across three channels simultaneously: IDC Spotlight launched today, Forrester TEI just completed, Super Agents campaign is building. Email, Organic Content, and Paid Social all positioned to benefit over the next 2–3 weeks.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== SECTION 2: CHANNEL DETAIL ===== -->
+<div class="section">
+  <div class="section-label">Section 2 — Channel owner detail</div>
+
+  <div id="channels"></div>
+</div>
+
+<!-- ===== SECTION 3: SEGMENT BREAKDOWN ===== -->
+<div class="section">
+  <div class="section-label">Section 3 — Segment performance breakdown</div>
+  <div class="card">
+    <div class="legend">
+      <span class="legend-item"><span class="legend-swatch" style="background: var(--green);"></span>On/ahead of pace ≥90%</span>
+      <span class="legend-item"><span class="legend-swatch" style="background: var(--amber);"></span>Slightly behind 70–89%</span>
+      <span class="legend-item"><span class="legend-swatch" style="background: var(--red);"></span>Behind &lt;70%</span>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label">NAMER Commercial</div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width: 76%; background: var(--amber);"></div>
+        <div class="benchmark-line" style="left: 100%;"></div>
+      </div>
+      <div class="prog-stat">22 of 29 <span class="prog-pct" style="color: var(--amber);">76%</span></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label">EMEA</div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width: 88%; background: var(--green);"></div>
+      </div>
+      <div class="prog-stat">21 of 24 <span class="prog-pct" style="color: var(--green);">88%</span></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label">NAMER Strategic</div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width: 100%; background: var(--green);"></div>
+      </div>
+      <div class="prog-stat">16 of 16 <span class="prog-pct" style="color: var(--green);">100%</span></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label">NAMER Key</div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width: 63%; background: var(--red);"></div>
+      </div>
+      <div class="prog-stat">10 of 16 <span class="prog-pct" style="color: var(--red);">63%</span></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label">APAC</div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width: 78%; background: var(--amber);"></div>
+      </div>
+      <div class="prog-stat">7 of 9 <span class="prog-pct" style="color: var(--amber);">78%</span></div>
+    </div>
+    <div class="prog-row" style="border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px;">
+      <div class="prog-label" style="font-weight: 600;">Total</div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width: 81%; background: var(--amber);"></div>
+      </div>
+      <div class="prog-stat" style="font-weight: 600;">77 of 95 <span class="prog-pct" style="color: var(--amber);">81%</span></div>
+    </div>
+    <p class="note" style="margin-top: 10px;">Pro-rated target = Q2 goal × (3 ÷ 13 weeks). Pacing % = QTD ÷ pro-rated target.</p>
+  </div>
+  <div class="insight">NAMER Key is the clearest gap — 63% pacing with no single channel carrying it, making it the most exposed segment heading into week 4. NAMER Commercial also behind at 76%. NAMER Strategic hit its pro-rated target exactly (16 of 16). EMEA at 88% is on track to outperform — Zip Forward Europe S1s (3 confirmed, multi-touch) are the primary driver, with AI Summit SF pipeline building over the next two weeks. APAC at 78%, behind pace with minimal BDR contribution (0 actuals vs. a 24-deal goal).</div>
+</div>
+
+<!-- ===== SECTION 4: CONVERSION RATES ===== -->
+<div class="section">
+  <div class="section-label">Section 4 — Conversion rate snapshot (90-day rolling)</div>
+  <div class="card">
+    <div class="insight" style="margin-top: 0; margin-bottom: 14px;"><strong>Headline pattern:</strong> SAL→S0 is declining across multiple channels simultaneously — Tradeshow (−29%), GSearch (−24%), LinkedIn (−33%), Field Event (−20%). This is an MDR throughput issue, not individual channel dynamics. Organic Demo, Email, and GSearch S0→S1 are all flat after correcting for recency bias.</div>
+    <p class="note" style="margin-bottom: 10px;">Maturity-buffered denominators: INQ (14-day), SAL (21-day), S0 cohort-matched (30-day). Flags = relative change vs. prior 90-day window. † = anomalous prior period.</p>
+    <div style="overflow-x: auto;">
+    <table class="conv-table">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th style="text-align:right;">INQ</th>
+          <th style="text-align:right;">SAL</th>
+          <th style="text-align:right;">S0</th>
+          <th style="text-align:right;">S1</th>
+          <th>INQ→SAL</th>
+          <th>vs. prior</th>
+          <th>SAL→S0</th>
+          <th>vs. prior</th>
+          <th>S0→S1</th>
+          <th>vs. prior</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Organic: Demo</td>
+          <td style="text-align:right;">1,066</td><td style="text-align:right;">565</td><td style="text-align:right;">168</td><td style="text-align:right;">109</td>
+          <td>63.7%</td><td><span class="flag-neutral">−1% →</span></td>
+          <td>41.4%</td><td><span class="flag-neutral">−6% →</span></td>
+          <td>70.0%</td><td><span class="flag-neutral">−4% →</span></td>
+        </tr>
+        <tr>
+          <td>Tradeshow (event)</td>
+          <td style="text-align:right;">3,711</td><td style="text-align:right;">2,433</td><td style="text-align:right;">119</td><td style="text-align:right;">43</td>
+          <td>89.5%</td><td><span class="flag-neutral">+3% →</span></td>
+          <td>9.9%</td><td><span class="flag-red">−29% ↓</span></td>
+          <td>50.0%</td><td><span class="flag-neutral">−8% →</span></td>
+        </tr>
+        <tr>
+          <td>Tradeshow (pre-event)</td>
+          <td style="text-align:right;">9,769</td><td style="text-align:right;">5,189</td><td style="text-align:right;">29</td><td style="text-align:right;">14</td>
+          <td>61.9%</td><td><span class="flag-red">−23% ↓</span></td>
+          <td>0.8%</td><td><span class="flag-amber">−11% ↓</span></td>
+          <td>73.3%</td><td><span class="flag-neutral">−8% →</span></td>
+        </tr>
+        <tr>
+          <td>Paid: GSearch</td>
+          <td style="text-align:right;">297</td><td style="text-align:right;">135</td><td style="text-align:right;">41</td><td style="text-align:right;">34</td>
+          <td>50.9%</td><td><span class="flag-neutral">−9% →</span></td>
+          <td>37.6%</td><td><span class="flag-red">−24% ↓</span></td>
+          <td>82.1%</td><td><span class="flag-neutral">+1% →</span></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td style="text-align:right;">575</td><td style="text-align:right;">215</td><td style="text-align:right;">20</td><td style="text-align:right;">13</td>
+          <td>45.6%</td><td><span class="flag-neutral">+4% →</span></td>
+          <td>12.0%</td><td><span class="flag-neutral">+1% →</span></td>
+          <td>64.3%</td><td><span class="flag-neutral">+7% →</span></td>
+        </tr>
+        <tr>
+          <td>Corporate Event</td>
+          <td style="text-align:right;">306</td><td style="text-align:right;">60</td><td style="text-align:right;">24</td><td style="text-align:right;">9</td>
+          <td>24.9%</td><td><span class="flag-red">−54% ↓</span></td>
+          <td>54.5%</td><td><span class="flag-neutral">—†</span></td>
+          <td>35.3%</td><td><span class="flag-amber">−18% ↓</span></td>
+        </tr>
+        <tr>
+          <td>Paid: LinkedIn</td>
+          <td style="text-align:right;">493</td><td style="text-align:right;">300</td><td style="text-align:right;">19</td><td style="text-align:right;">7</td>
+          <td>68.5%</td><td><span class="flag-neutral">−5% →</span></td>
+          <td>7.9%</td><td><span class="flag-red">−33% ↓</span></td>
+          <td>35.7%</td><td><span class="flag-green">+12% ↑</span></td>
+        </tr>
+        <tr>
+          <td>Field Event</td>
+          <td style="text-align:right;">982</td><td style="text-align:right;">249</td><td style="text-align:right;">13</td><td style="text-align:right;">5</td>
+          <td>30.0%</td><td><span class="flag-neutral">−7% →</span></td>
+          <td>6.7%</td><td><span class="flag-red">−20% ↓</span></td>
+          <td>44.4%</td><td><span class="flag-red">−33% ↓</span></td>
+        </tr>
+        <tr>
+          <td>Organic: Content</td>
+          <td style="text-align:right;">1,278</td><td style="text-align:right;">528</td><td style="text-align:right;">9</td><td style="text-align:right;">4</td>
+          <td>50.3%</td><td><span class="flag-neutral">+7% →</span></td>
+          <td>2.4%</td><td><span class="flag-amber">−11% ↓</span></td>
+          <td>80.0%</td><td><span class="flag-green">+40% ↑</span></td>
+        </tr>
+        <tr>
+          <td>Content Synd.</td>
+          <td style="text-align:right;">5,626</td><td style="text-align:right;">655</td><td style="text-align:right;">4</td><td style="text-align:right;">3</td>
+          <td>11.8%</td><td><span class="flag-neutral">+2% →</span></td>
+          <td>0.6%</td><td><span class="flag-neutral">—†</span></td>
+          <td>66.7%</td><td><span class="flag-green">+33% ↑</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 5: S0 PIPELINE HEALTH ===== -->
+<div class="section">
+  <div class="section-label">Section 5 — S0 pipeline health</div>
+
+  <div class="kpi-grid" style="grid-template-columns: repeat(3,1fr);">
+    <div class="kpi">
+      <div class="kpi-label">Future meetings</div>
+      <div class="kpi-value" style="color: var(--green);">66</div>
+      <div class="kpi-sub">~23 S1s at 35% conv.</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Past-due / stale</div>
+      <div class="kpi-value" style="color: var(--red);">62</div>
+      <div class="kpi-sub">needs disposition</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">No meeting date</div>
+      <div class="kpi-value" style="color: var(--amber);">11</div>
+      <div class="kpi-sub">7 are Organic Demo</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="legend">
+      <span class="legend-item"><span class="legend-swatch" style="background: #378ADD;"></span>Future meetings</span>
+      <span class="legend-item"><span class="legend-swatch" style="background: #E24B4A;"></span>Past-due / stale</span>
+      <span class="legend-item"><span class="legend-swatch" style="background: #888780;"></span>No date set</span>
+    </div>
+    <div class="chart-wrap" style="height: 320px;">
+      <canvas id="s0Chart" role="img" aria-label="Stacked horizontal bar chart showing S0 pipeline by channel. Tradeshow leads with 21 future and 25 stale. Demo has 10 future, 9 stale, 7 no date.">S0 pipeline by channel: Tradeshow 21 future / 25 stale; Demo 10 / 9 / 7; Other 12 / 9; Pre-Event 4 / 8; Corp Event 5 / 4; Field Event 6 / 2; Content 3 / 1 / 2; LinkedIn 2 / 1; Webinar 2 / 0 / 1; GSearch 0 / 1 / 1; Email 1.</canvas>
+    </div>
+    <div class="insight">
+      <strong>Tradeshow dominates both buckets</strong> — 25 stale S0s (largely Q1 no-shows and close-losses) vs. 21 with future meetings. MDR cleanup needed. Pre-Event has 8 stale vs. 4 future — net-stale. Organic Demo's 7 no-date records warrant a Form-to-Calendar audit.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6: OVERALL S1 GOAL ATTAINMENT ACROSS ALL MOTIONS ===== -->
+<div class="section">
+  <div class="section-label">Section 6 — Overall S1 goal attainment across all motions</div>
+  <p style="color:var(--text-muted); font-size:0.85rem; margin:0 0 1.25rem;">This section is less actionable but is included to provide visibility and maintain alignment with Sales on overall pipeline performance across all motions.</p>
+
+  <div class="kpi-grid" style="grid-template-columns: repeat(4,1fr);">
+    <div class="kpi">
+      <div class="kpi-label">Inbound goal</div>
+      <div class="kpi-value">78<span style="font-size:16px; color: var(--muted);">/414</span></div>
+      <div class="kpi-sub" style="color: var(--amber);">19% raw pacing</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Outbound-AE goal</div>
+      <div class="kpi-value">87<span style="font-size:16px; color: var(--muted);">/390</span></div>
+      <div class="kpi-sub" style="color: var(--amber);">22% raw pacing</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Outbound-BDR goal</div>
+      <div class="kpi-value">123<span style="font-size:16px; color: var(--muted);">/696</span></div>
+      <div class="kpi-sub" style="color: var(--amber);">18% raw pacing</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total (all-source)</div>
+      <div class="kpi-value">231<span style="font-size:16px; color: var(--muted);">/1,551</span></div>
+      <div class="kpi-sub" style="color: var(--amber);">15% raw pacing</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="note" style="margin-bottom: 14px;">Benchmark line = 23% (week 3 of 13 elapsed). Color: <span style="color: var(--green); font-weight: 600;">green ≥25%</span> (ahead), <span style="color: var(--amber); font-weight: 600;">amber 15–24%</span> (on/near pace), <span style="color: var(--red); font-weight: 600;">red &lt;15%</span> (behind). One S1 can count in multiple motions (multi-touch). Company-wide goals; marketing inbound subset tracked separately in Section 1.</p>
+
+    <div id="motionGrid"></div>
+  </div>
+
+  <div class="card" style="margin-top: 12px;">
+    <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Motion read</div>
+    <ul class="headline-list">
+      <li><span class="hl-dot" style="background: var(--amber);"></span><strong>Inbound (marketing):</strong> Broadly healthy — NAMER Strategic (22%) and EMEA (20%) near pace. NAMER Key at 14% (10 vs. 69 goal) is the only soft spot.</li>
+      <li><span class="hl-dot" style="background: var(--green);"></span><strong>Outbound-AE:</strong> Strongest motion. NAMER Strategic (29%) and NAMER Commercial (25%) are ahead of pace. APAC AE at 1 actual vs. 36 goal (3%) is the outlier — needs a conversation with APAC leadership.</li>
+      <li><span class="hl-dot" style="background: var(--red);"></span><strong>Outbound-BDR:</strong> Highest-risk motion. Q2 BDR goal is 696 — largest of any motion. NAMER Strategic BDR at 12% (26 vs. 210 goal) is 184 deals behind with 10 weeks left. APAC BDR is 0. This is where the quarter is won or lost.</li>
+      <li><span class="hl-dot" style="background: var(--gray);"></span><strong>Channel:</strong> Small goals. NAMER Commercial (33%) ahead; others behind but gaps are single digits.</li>
+    </ul>
+  </div>
+</div>
+
+<p style="font-size: 11px; color: var(--muted); text-align: center; margin-top: 32px;">Generated by marketing-weekly-review skill &nbsp;·&nbsp; Snowflake GTM data warehouse &nbsp;·&nbsp; May 21, 2026</p>
+
+</div><!-- end page -->
+
+<script>
+// ===== CHANNEL DATA =====
+const channels = [
+  { name: "Organic: Demo/Walkthrough", actual: 26, target: 119, prorated: 27, pct: 96,
+    body: "The team's most consistent S1 engine is running close to pace. The primary drivers are the evergreen demo request form <code>OG-Request-Demo-1036</code> (9 S1s), Qualified Chat (2 S1s), and Contact-Sales form (2 S1s). There are 40 open Demo S0s in the pipeline — the second-largest S0 backlog after Tradeshow — which should continue converting at a healthy rate.<br><br>Conversion rates are stable across all three stages (INQ→SAL: 63.7% ➡️, SAL→S0: 41.4% ➡️, S0→S1: 70.0% ➡️) — no structural concerns here. What softening appeared in earlier cuts was recency bias from immature lead cohorts." },
+  { name: "Email", actual: 4, target: 20, prorated: 5, pct: 80,
+    body: "Behind pace, but all three conversion rates are essentially flat (INQ→SAL: 45.6% ➡️, SAL→S0: 12.0% ➡️, S0→S1: 64.3% ➡️) — no structural mid-funnel issues. A nurture architecture change is planned for early June: the current MOFU content shifts to first-touch, and a new MOFU/BOFU layer focused on driving demo requests replaces it. The goal is to invert the current pattern where the channel generates strong ebook downloads but limited BOFU conversion. Email and organic content attribution are closely linked — the incoming Forrester TEI + Super Agents slate will fuel both channels simultaneously." },
+  { name: "Organic: Content", actual: 0, target: 18, prorated: 4, pct: 0,
+    body: "No Q2 S1s yet from content-attributed campaigns, but the supply chain is replenishing rapidly: IDC Spotlight Report launched today, Forrester TEI just completed, and a Super Agents launch campaign is described as the biggest content moment of the quarter. S0→S1 conversion has actually improved meaningfully (80.0% vs. 57.1% prior, +40% 🟢) — when content leads reach a meeting, they're converting to qualified opps at a higher rate than before. Note that email and content are tightly coupled for attribution purposes — content that distributes through email will often credit email, so channel-level S1 counts understate content's total contribution." },
+  { name: "Paid: GSearch", actual: 8, target: 37, prorated: 8, pct: 100,
+    body: "On pace and performing well. The S0→S1 close rate is the strongest of any channel at 82.1% (essentially flat vs. 81.5% prior ➡️) — high-intent leads that reach a meeting convert reliably. The flag to watch is SAL→S0 (37.6% vs. 49.4% prior, −24% 🔴): fewer search-driven leads are making it to a scheduled meeting — SAL→S0 is weak across multiple channels this week, suggesting an MDR capacity or sequencing issue rather than a lead quality problem." },
+  { name: "Paid Social (LinkedIn + Meta)", actual: 4, target: 20, prorated: 5, pct: 80,
+    body: "Slightly behind, with spend being deliberately pulled back while the content library is thin. Q1 carry-forward content (CO launch guide, P2P guide) hasn't had broad market appeal, and Meta cost efficiency has deteriorated. With the Forrester TEI published and a Super Agents campaign slate building, performance should improve as fresher assets distribute through the channel over the next 2–3 weeks." },
+  { name: "Tradeshow (incl. Pre-Event)", actual: 18, target: 100, prorated: 23, pct: 78,
+    body: `All 18 Q2 S1s are rollovers from Q1 events, which is expected given the typical 4–6 week lag from event attendance to S1 conversion. Top contributing campaigns:<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;">
+  <thead><tr style="background:#f1f5f9;"><th style="text-align:left;padding:5px 8px;border:1px solid #e2e8f0;">Campaign</th><th style="padding:5px 8px;border:1px solid #e2e8f0;text-align:center;">S1s</th></tr></thead>
+  <tbody>
+    <tr><td style="padding:5px 8px;border:1px solid #e2e8f0;">Procurement-Supply-Chain-Chicago</td><td style="padding:5px 8px;border:1px solid #e2e8f0;text-align:center;">4</td></tr>
+    <tr><td style="padding:5px 8px;border:1px solid #e2e8f0;">PASA-procureTECH (APAC)</td><td style="padding:5px 8px;border:1px solid #e2e8f0;text-align:center;">3</td></tr>
+    <tr><td style="padding:5px 8px;border:1px solid #e2e8f0;">Consero</td><td style="padding:5px 8px;border:1px solid #e2e8f0;text-align:center;">2</td></tr>
+    <tr><td style="padding:5px 8px;border:1px solid #e2e8f0;">ISM-World</td><td style="padding:5px 8px;border:1px solid #e2e8f0;text-align:center;">2</td></tr>
+    <tr><td style="padding:5px 8px;border:1px solid #e2e8f0;">ProcureCon Indirect West + NAEP/EPIC</td><td style="padding:5px 8px;border:1px solid #e2e8f0;text-align:center;">2</td></tr>
+  </tbody>
+</table>
+The bigger story is what's still in flight: <strong>58 open Tradeshow + Pre-Event S0s</strong> (25 with future meetings, 33 past-due per Section 4). MDRs are actively working these — with close-loss and no-shows creating drag but meaningful qualified volume underneath. A new AI outreach tool (Actively) is being piloted to improve follow-up personalization. At 30%+ historical S0→S1 rates, the 25 future-meeting S0s represent roughly 8–9 incremental S1s in the near term, with more possible as the past-due records get dispositioned.<br><br>Tradeshow SAL→S0 has declined (9.9% vs. 13.9% prior, −29% 🔴) — fewer leads are making it to a scheduled meeting, suggesting an MDR capacity or sequencing issue rather than a lead quality problem. With 2,433 SALs in the window and only 119 S0s, MDR leadership should confirm all post-event lists are processed and sequence capacity is keeping pace with volume.` },
+  { name: "Corporate Event", actual: 3, target: 10, prorated: 2, pct: 150,
+    body: "Ahead of pro-rated pace, all from Zip Forward Europe. Notably, most ZFE conversions are multi-touch (BDR + inbound or AE + inbound) — evidence that the sales team's active promotion of field events is creating shared attribution in a meaningful way. AI Summit SF is two weeks out with 4–7 potential S1s visible but not yet in stage.<br><br>SAL→S0 is 54.5% on small mature volume (prior period is anomalous and not directly comparable). S0→S1 has declined mildly (35.3% vs. 42.9%, −18% 🟡) — worth watching as AI Summit SF opps come through over the next 2–3 weeks. INQ→SAL has dropped significantly (24.9% vs. 54.5%, −54% 🔴), likely reflecting a different attendee mix vs. the elevated quality of Zip Forward Europe in the prior period." },
+  { name: "Field Event", actual: 1, target: 18, prorated: 4, pct: 25,
+    body: "The AI Roadshow is actively running with Veronica and Amanda leading. One S1 follow-up from last week's dinner series is pending. S1 conversion from field events lags the events themselves by 2–4 weeks, so the back half of the quarter should see acceleration. INQ→SAL is stable (30.0% vs. 32.4% prior, ➡️) — not the concern it initially appeared. The real flag is S0→S1 (44.4% vs. 66.7% prior, −33% 🔴): once meetings are scheduled, conversion to a qualified opp has dropped meaningfully. Worth reviewing what's different about AI Roadshow meeting quality vs. prior field events." },
+  { name: "Webinar", actual: 1, target: 18, prorated: 4, pct: 25,
+    body: "Early in the quarter but volume is building: Contract Orchestration webinar ran this morning with ~120 attendees, and 4 more webinars are scheduled over the next two weeks (including a third-party hosted event). Two S0s have meetings scheduled this week and may flip to S1 shortly. Riley noted this is already ahead of Q1 S1 pace — first S1 on the board in Q2 where Q1 had none at this stage." },
+  { name: "Other", actual: 11, target: 47, prorated: 11, pct: 100,
+    body: "On pace. No material concerns." },
+];
+
+function getPctColor(pct) {
+  if (pct >= 90) return { bg: '#eaf3de', color: '#3b6d11' };
+  if (pct >= 70) return { bg: '#faeeda', color: '#92400e' };
+  return { bg: '#fcebeb', color: '#991b1b' };
+}
+
+const chContainer = document.getElementById('channels');
+channels.forEach((ch, i) => {
+  const c = getPctColor(ch.pct);
+  const el = document.createElement('div');
+  el.className = 'channel-card';
+  el.innerHTML = `
+    <div class="channel-head" onclick="toggleCh(${i})">
+      <div class="ch-name">${ch.name}</div>
+      <div class="ch-meta">
+        <span class="ch-s1">${ch.actual} S1s / target ${ch.target}</span>
+        <span class="ch-pct-badge" style="background: ${c.bg}; color: ${c.color};">${ch.pct}%</span>
+        <span class="chevron open" id="chev-${i}">▾</span>
+      </div>
+    </div>
+    <div class="channel-body open" id="chbody-${i}">
+      <div style="padding-top: 12px;">${ch.body}</div>
+    </div>
+  `;
+  chContainer.appendChild(el);
+});
+
+function toggleCh(i) {
+  const body = document.getElementById('chbody-' + i);
+  const chev = document.getElementById('chev-' + i);
+  const open = body.classList.toggle('open');
+  chev.classList.toggle('open', open);
+}
+
+// ===== WEEKLY TREND CHART =====
+new Chart(document.getElementById('trendChart'), {
+  type: 'bar',
+  data: {
+    labels: ['W1 (May 1–3)', 'W2 (May 4–10)', 'W3 (May 11–17)', 'W4 (May 18–21†)'],
+    datasets: [{
+      label: 'S1s',
+      data: [4, 20, 32, 21],
+      backgroundColor: ['#B5D4F4','#B5D4F4','#378ADD','#85B7EB'],
+      borderRadius: 4,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} S1s` } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { beginAtZero: true, ticks: { stepSize: 10, font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.06)' } }
+    }
+  }
+});
+
+// ===== S0 PIPELINE CHART =====
+new Chart(document.getElementById('s0Chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Tradeshow','Demo/WB','Other','Pre-Event','Corp Event','Field Event','Content','LinkedIn','Webinar','GSearch','Email'],
+    datasets: [
+      { label: 'Future', data: [21,10,12,4,5,6,3,2,2,0,1], backgroundColor: '#378ADD', borderRadius: 2 },
+      { label: 'Past-due', data: [25,9,9,8,4,2,1,1,0,1,0], backgroundColor: '#E24B4A', borderRadius: 2 },
+      { label: 'No date', data: [0,7,0,0,0,0,2,0,1,1,0], backgroundColor: '#888780', borderRadius: 2 },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      x: { stacked: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { size: 11 } } },
+      y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ===== MOTION PROGRESS BARS =====
+const segments = [
+  { name: 'NAMER Commercial', totalAct: 78, totalGoal: 411,
+    motions: [
+      { label: 'Inbound',       act: 24, goal: 129 },
+      { label: 'Outbound-AE',   act: 35, goal: 138 },
+      { label: 'Outbound-BDR',  act: 34, goal: 126 },
+      { label: 'Channel',       act: 6,  goal: 18  },
+    ]},
+  { name: 'EMEA', totalAct: 58, totalGoal: 369,
+    motions: [
+      { label: 'Inbound',       act: 21, goal: 105 },
+      { label: 'Outbound-AE',   act: 18, goal: 78  },
+      { label: 'Outbound-BDR',  act: 34, goal: 177 },
+      { label: 'Channel',       act: 2,  goal: 9   },
+    ]},
+  { name: 'NAMER Strategic', totalAct: 38, totalGoal: 336,
+    motions: [
+      { label: 'Inbound',       act: 16, goal: 72  },
+      { label: 'Outbound-AE',   act: 14, goal: 48  },
+      { label: 'Outbound-BDR',  act: 26, goal: 210 },
+      { label: 'Channel',       act: 1,  goal: 6   },
+    ]},
+  { name: 'NAMER Key', totalAct: 48, totalGoal: 327,
+    motions: [
+      { label: 'Inbound',       act: 10, goal: 69  },
+      { label: 'Outbound-AE',   act: 19, goal: 90  },
+      { label: 'Outbound-BDR',  act: 29, goal: 159 },
+      { label: 'Channel',       act: 1,  goal: 9   },
+    ]},
+  { name: 'APAC', totalAct: 9, totalGoal: 108,
+    motions: [
+      { label: 'Inbound',       act: 7,  goal: 39  },
+      { label: 'Outbound-AE',   act: 1,  goal: 36  },
+      { label: 'Outbound-BDR',  act: 0,  goal: 24  },
+      { label: 'Channel',       act: 1,  goal: 9   },
+    ]},
+];
+
+const BENCHMARK = 23;
+
+function motionColor(pct) {
+  if (pct >= 25) return '#639922';
+  if (pct >= 15) return '#BA7517';
+  return '#E24B4A';
+}
+
+const motionGrid = document.getElementById('motionGrid');
+segments.forEach(seg => {
+  const el = document.createElement('div');
+  el.className = 'motion-segment';
+  const rawPct = Math.round(seg.totalAct / seg.totalGoal * 100);
+  const segColor = motionColor(rawPct);
+  let motionHTML = '<div class="motion-rows">';
+  seg.motions.forEach(m => {
+    const pct = Math.round(m.act / m.goal * 100);
+    const fillPct = Math.min(pct, 100);
+    const color = motionColor(pct);
+    const benchLeft = Math.min(BENCHMARK, 100);
+    motionHTML += `
+      <div class="motion-row">
+        <div class="motion-row-label">
+          <span>${m.label}</span>
+          <span style="color: ${color}; font-weight: 600;">${m.act}/${m.goal} (${pct}%)</span>
+        </div>
+        <div class="motion-track">
+          <div class="motion-fill" style="width: ${fillPct}%; background: ${color};"></div>
+          <div class="benchmark-line" style="left: ${benchLeft}%;"></div>
+        </div>
+      </div>`;
+  });
+  motionHTML += '</div>';
+  el.innerHTML = `
+    <div class="motion-seg-header">
+      <span class="motion-seg-name">${seg.name}</span>
+      <span class="motion-seg-total" style="color: ${segColor}; font-weight: 600;">${seg.totalAct} total S1s / ${seg.totalGoal} goal (${rawPct}% raw pacing)</span>
+    </div>
+    ${motionHTML}
+    ${segments.indexOf(seg) < segments.length - 1 ? '<hr style="margin: 16px 0;">' : ''}
+  `;
+  motionGrid.appendChild(el);
+});
+</script>
+</body>
+</html>

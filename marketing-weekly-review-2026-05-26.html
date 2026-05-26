@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Weekly Review — Week 4 · Q2 FY27 · May 26, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; font-size: 14px; line-height: 1.6; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+
+  /* Header */
+  .header { background: #1e293b; color: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .header .sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+  .header .badge { background: #334155; color: #94a3b8; font-size: 11px; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+
+  /* Section titles */
+  .section { margin-bottom: 32px; }
+  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #64748b; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+
+  /* KPI Cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-card { background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 18px 20px; }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; margin-bottom: 6px; }
+  .kpi-value { font-size: 32px; font-weight: 800; color: #1e293b; line-height: 1; }
+  .kpi-sub { font-size: 12px; color: #64748b; margin-top: 4px; }
+  .kpi-pacing { font-size: 14px; font-weight: 700; margin-top: 8px; padding: 4px 10px; border-radius: 6px; display: inline-block; }
+  .pace-green { background: #dcfce7; color: #15803d; }
+  .pace-amber { background: #fef3c7; color: #b45309; }
+  .pace-red { background: #fee2e2; color: #b91c1c; }
+
+  /* Charts */
+  .chart-wrap { background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 16px; }
+  .chart-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 14px; }
+
+  /* Headlines */
+  .headlines { background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 20px; }
+  .headline-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+  .headline-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .headline-dot { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .headline-text { font-size: 13.5px; color: #374151; }
+  .headline-text strong { color: #1e293b; }
+
+  /* Channel Accordion */
+  .accordion { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 10px; background: #fff; }
+  .acc-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; user-select: none; gap: 12px; }
+  .acc-header:hover { background: #f8fafc; }
+  .acc-channel { font-size: 14px; font-weight: 600; color: #1e293b; flex: 1; }
+  .acc-stats { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .acc-stat { font-size: 12px; color: #64748b; white-space: nowrap; }
+  .acc-stat strong { color: #374151; }
+  .acc-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 5px; white-space: nowrap; }
+  .acc-arrow { color: #94a3b8; font-size: 12px; transition: transform 0.2s; flex-shrink: 0; }
+  .acc-body { padding: 0 18px 16px; display: block; border-top: 1px solid #f1f5f9; }
+  .acc-meta { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 8px; margin-top: 12px; font-family: 'SF Mono', 'Fira Code', monospace; }
+  .acc-prose { font-size: 13.5px; color: #374151; line-height: 1.65; }
+  .acc-prose p { margin-bottom: 8px; }
+  .acc-prose p:last-child { margin-bottom: 0; }
+
+  /* Progress bars */
+  .prog-row { margin-bottom: 14px; }
+  .prog-label { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .prog-name { font-size: 13px; font-weight: 600; color: #374151; }
+  .prog-nums { font-size: 12px; color: #64748b; }
+  .prog-track { background: #f1f5f9; border-radius: 6px; height: 10px; overflow: hidden; position: relative; }
+  .prog-bar { height: 100%; border-radius: 6px; transition: width 0.5s ease; }
+  .prog-marker { position: absolute; top: -3px; height: 16px; width: 2px; background: #94a3b8; border-radius: 1px; }
+
+  /* Conversion table */
+  .cvr-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .cvr-table th { text-align: left; padding: 8px 10px; background: #f8fafc; font-weight: 700; color: #374151; border-bottom: 2px solid #e2e8f0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
+  .cvr-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; color: #374151; vertical-align: middle; }
+  .cvr-table tr:last-child td { border-bottom: none; }
+  .flag-red { color: #b91c1c; font-weight: 700; }
+  .flag-amber { color: #b45309; font-weight: 600; }
+  .flag-green { color: #15803d; font-weight: 600; }
+  .flag-flat { color: #64748b; }
+  .flag-warn { color: #6b7280; font-style: italic; }
+
+  /* S0 section */
+  .s0-kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .s0-kpi { background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 16px 18px; }
+  .s0-kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+  .s0-kpi-val { font-size: 28px; font-weight: 800; line-height: 1; }
+  .s0-kpi-sub { font-size: 11px; color: #64748b; margin-top: 4px; }
+  .label-future { color: #0369a1; }
+  .label-past { color: #b91c1c; }
+  .label-none { color: #6b7280; }
+
+  /* Section 6 */
+  .s6-note { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 12.5px; color: #64748b; }
+  .motion-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .motion-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+  .motion-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 6px; }
+  .motion-val { font-size: 24px; font-weight: 800; color: #1e293b; line-height: 1; }
+  .motion-goal { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+
+  /* Tables */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { padding: 9px 12px; background: #f8fafc; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: #374151; border-bottom: 2px solid #e2e8f0; text-align: right; }
+  .data-table th:first-child { text-align: left; }
+  .data-table td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; text-align: right; color: #374151; }
+  .data-table td:first-child { text-align: left; font-weight: 600; }
+  .data-table tr:last-child td { border-bottom: none; font-weight: 700; background: #f8fafc; }
+  .data-table tr.total-row td { font-weight: 700; background: #f8fafc; border-top: 2px solid #e2e8f0; }
+
+  /* Narrative box */
+  .narrative { background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 18px 20px; margin-top: 16px; font-size: 13.5px; color: #374151; line-height: 1.7; }
+  .narrative p { margin-bottom: 10px; }
+  .narrative p:last-child { margin-bottom: 0; }
+
+  /* Inline highlights */
+  .hl-red { color: #b91c1c; font-weight: 600; }
+  .hl-amber { color: #b45309; font-weight: 600; }
+  .hl-green { color: #15803d; font-weight: 600; }
+  .hl-blue { color: #0369a1; font-weight: 600; }
+
+  /* Alert banner */
+  .alert-banner { border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 13px; border-left: 4px solid; }
+  .alert-red { background: #fff5f5; border-color: #ef4444; color: #7f1d1d; }
+  .alert-blue { background: #eff6ff; border-color: #3b82f6; color: #1e3a5f; }
+
+  @media (max-width: 680px) {
+    .kpi-row, .s0-kpi-row, .motion-cards { grid-template-columns: 1fr 1fr; }
+    .acc-stats { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== PASSWORD GATE ====== -->
+<div id="pw-gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f4f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="background:#fff;border-radius:12px;border:0.5px solid rgba(0,0,0,0.1);padding:40px 48px;text-align:center;max-width:360px;width:100%;">
+    <div style="font-size:28px;margin-bottom:12px;">📊</div>
+    <div style="font-size:17px;font-weight:600;color:#1e293b;margin-bottom:4px;">Marketing Weekly Review</div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:24px;">Week 4 · Q2 FY27 · May 26, 2026</div>
+    <input id="pw-input" type="password" placeholder="Enter password" autocomplete="current-password"
+      style="width:100%;padding:10px 14px;font-size:14px;border:1px solid rgba(0,0,0,0.15);border-radius:8px;outline:none;margin-bottom:10px;color:#1e293b;"
+      onkeydown="if(event.key==='Enter')checkPw()"/>
+    <div id="pw-error" style="font-size:12px;color:#E24B4A;min-height:16px;margin-bottom:8px;"></div>
+    <button onclick="checkPw()" style="width:100%;padding:10px;background:#1e293b;color:#fff;font-size:14px;font-weight:500;border:none;border-radius:8px;cursor:pointer;">View briefing</button>
+  </div>
+</div>
+
+<!-- ====== CONTENT ====== -->
+<div id="pw-content" style="display:none;">
+<div class="page">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Marketing Weekly Review — Week 4 · Q2 FY27</h1>
+      <div class="sub">May 26, 2026 · Prepared by Claude on behalf of Sean Kennedy · Data: Snowflake + Omni</div>
+    </div>
+    <div class="badge">25 of 91 days elapsed · 27.5% of quarter</div>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SECTION 1: LEADERSHIP SUMMARY -->
+<!-- ================================================ -->
+<div class="section">
+  <div class="section-title">Section 1 — Leadership Summary</div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">QTD S1s</div>
+      <div class="kpi-value">91</div>
+      <div class="kpi-sub">of 412 Q2 target · 22.1% raw attainment</div>
+      <div class="kpi-pacing pace-amber">80.4% of pro-rated pace</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">vs. Pro-rated Target (~113)</div>
+      <div class="kpi-value" style="color:#b45309;">–22</div>
+      <div class="kpi-sub">Need 113 by today to be on pace</div>
+      <div class="kpi-pacing pace-amber">80.4% pacing 🟡</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">vs. Forecast (372)</div>
+      <div class="kpi-value" style="color:#b45309;">–11</div>
+      <div class="kpi-sub">Need 102 by today to be on forecast pace</div>
+      <div class="kpi-pacing pace-amber">89.0% pacing 🟡</div>
+    </div>
+  </div>
+
+  <!-- Weekly trend chart -->
+  <div class="chart-wrap">
+    <div class="chart-title">Weekly S1 Trend — Q2 FY27</div>
+    <canvas id="weeklyChart" height="90"></canvas>
+    <div style="font-size:11px;color:#94a3b8;margin-top:8px;">W5 (May 25–26) is partial — just started Monday. Implied run rate at current pace: <strong>331 S1s</strong> for the quarter.</div>
+  </div>
+
+  <!-- Headlines -->
+  <div class="headlines">
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Top Headlines</div>
+    <div class="headline-item">
+      <div class="headline-dot">🔴</div>
+      <div class="headline-text"><strong>Implied run rate of 331 S1s projects 81 short of target and 41 short of forecast.</strong> At 80.4% of pro-rated pace in week 4, the team needs to accelerate through May and June to build a buffer before a slower July. This is not a crisis — several channels are on or ahead of pace — but the overall gap requires deliberate attention.</div>
+    </div>
+    <div class="headline-item">
+      <div class="headline-dot">🔴</div>
+      <div class="headline-text"><strong>SAL→S0 conversion is declining across five channels simultaneously — Tradeshow (–38%), GSearch (–22%), LinkedIn (–43%), Field Event (–21%), Organic Content (–37%).</strong> This cross-channel pattern points to a possible MDR throughput or sequencing issue rather than a channel-specific lead quality problem. The team should investigate MDR capacity and outreach effectiveness.</div>
+    </div>
+    <div class="headline-item">
+      <div class="headline-dot">🔵</div>
+      <div class="headline-text"><strong>71 open Q2 S0s imply ~25 incremental S1s at a 35% conversion rate.</strong> Tradeshow holds 33 of those future S0s, but the event season wraps in early June — making the next 3 weeks the critical conversion window. Pre-Event adds 15 more future S0s already in queue.</div>
+    </div>
+    <div class="headline-item">
+      <div class="headline-dot">🟡</div>
+      <div class="headline-text"><strong>NAMER Key is the most at-risk segment at 62.5% of pro-rated pace (12 of ~19 needed).</strong> The gap is broad-based with no single dominant cause. APAC (74.8%) is also behind. Both segments face a 🔴 pace-risk flag if they don't accelerate in the next 2 weeks.</div>
+    </div>
+    <div class="headline-item">
+      <div class="headline-dot">🟢</div>
+      <div class="headline-text"><strong>Content supply chain is activating after a dry spell.</strong> Forrester TEI launched this week, IDC Spotlight Report is live, Super Agents ebook inbound for late May/early June. Organic Content is at 0 QTD vs. an 18-S1 target, but the assets arriving should start converting — and Email, which moves with Content, is already ahead of pace at 109%.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SECTION 2: CHANNEL DETAIL -->
+<!-- ================================================ -->
+<div class="section">
+  <div class="section-title">Section 2 — Channel Owner Detail</div>
+
+  <!-- Channel helper function note -->
+  <div style="font-size:11.5px;color:#94a3b8;margin-bottom:12px;">Pro-rated = Target × 27.5% (25 of 91 days). Pacing = QTD ÷ pro-rated. All cards open by default.</div>
+
+  <!-- 1. Organic Demo -->
+  <div class="accordion" id="acc1">
+    <div class="acc-header" onclick="toggleAcc('acc1')">
+      <span class="acc-channel">Organic: Demo/Walkthrough</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>32</strong></span>
+        <span class="acc-stat">Target: <strong>119</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~33</strong></span>
+      </span>
+      <span class="acc-badge pace-green">97.9% 🟢</span>
+      <span class="acc-arrow" id="arr-acc1">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc1">
+      <div class="acc-meta">QTD: 32 S1s | Target: 119 | Pro-rated: ~33 | Pacing: 97.9% 🟢</div>
+      <div class="acc-prose">
+        <p>The steadiest channel in the portfolio, tracking near pro-rated pace in week 4. Volume is concentrated in two campaigns: the main demo request form (OG-Request-Demo-1036: 21 S1s) and Qualified Chat Lead Capture (SA-Evergreen: 8 S1s). Conversion rates are stable across all three stages vs. Q1 — INQ→SAL essentially flat at 64.8%, SAL→S0 at 41.2% (vs. 44.1% Q1, within tolerance), S0→S1 at 69.1% (vs. 73.0% Q1, within tolerance).</p>
+        <p>A note worth flagging: Aarin identified that customers signing up for product webinars (Contract Orchestration, P2P) are checking the demo-request box, generating Organic Demo credit for what are likely upsell conversations routed to AMs. As product-led motions grow, this attribution bleed will increase. The team should monitor whether these "customer demo requests" are being handled correctly downstream.</p>
+        <p>Within Q2, 29 open S0s exist (7 future, 17 past-due, 5 no-date). The 17 past-due and 5 no-date records suggest MDR follow-up gaps for recent Organic Demo SALs that deserve a disposition pass.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Email -->
+  <div class="accordion" id="acc2">
+    <div class="acc-header" onclick="toggleAcc('acc2')">
+      <span class="acc-channel">Email</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>6</strong></span>
+        <span class="acc-stat">Target: <strong>20</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~5.5</strong></span>
+      </span>
+      <span class="acc-badge pace-green">109.1% 🟢</span>
+      <span class="acc-arrow" id="arr-acc2">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc2">
+      <div class="acc-meta">QTD: 6 S1s | Target: 20 | Pro-rated: ~5.5 | Pacing: 109.1% 🟢</div>
+      <div class="acc-prose">
+        <p>Email is slightly ahead of pace and showing improved S0→S1 conversion (+14.7% relative vs. Q1, 68.8% vs. 60.0% 🟢). Aarin is planning a nurture restructure in June — repositioning MOFU content to run first to capture broader intent, then layering a new bottom-funnel sequence to drive more demo requests. The current nurture is "top-heavy," generating ebook downloads without enough demo-intent conversion downstream.</p>
+        <p>The channel's performance will track with the Organic Content supply chain. As Forrester TEI, IDC Spotlight, and Super Agents content hits email distribution in late May and June, Email should see a lift in both INQ volume and downstream S1 conversion. Email and Organic Content should be analyzed together going forward — when new content lands, Email is typically the distribution engine that turns downloads into attributed S1s.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Organic Content -->
+  <div class="accordion" id="acc3">
+    <div class="acc-header" onclick="toggleAcc('acc3')">
+      <span class="acc-channel">Organic: Content</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>0</strong></span>
+        <span class="acc-stat">Target: <strong>18</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~4.9</strong></span>
+      </span>
+      <span class="acc-badge pace-red">0% 🔴</span>
+      <span class="acc-arrow" id="arr-acc3">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc3">
+      <div class="acc-meta">QTD: 0 S1s | Target: 18 | Pro-rated: ~4.9 | Pacing: 0% 🔴</div>
+      <div class="acc-prose">
+        <p>Zero QTD S1s is the starkest number in the weekly data, but the cause is well understood: a content dry spell in early Q2 left limited gated assets to drive conversions. The pipeline is filling fast: IDC Spotlight Report launched this week, Forrester TEI arrived just before the May 19 review, Super Agents ebook is set for late May/early June, and a stacked webinar calendar is ahead. Brooks called it "a really big end of May and June."</p>
+        <p>Conversion rates reflect the low volume: SAL→S0 is down 37.0% relative (1.7% vs. 2.7% Q1 🔴) and S0→S1 is down 29.9% relative (40.0% vs. 57.1% Q1 🔴), but these figures come from just 2 S1s and 7 S0s in the 90-day window — directional, not definitive. 4 future Q2 S0s are already in queue. To close the gap vs. the 18-S1 target, the channel needs roughly 3–4 S1s per week from late May through June. Given the content arriving, that is achievable with proper MDR follow-up on new inquiries.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Paid GSearch -->
+  <div class="accordion" id="acc4">
+    <div class="acc-header" onclick="toggleAcc('acc4')">
+      <span class="acc-channel">Paid: GSearch</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>9</strong></span>
+        <span class="acc-stat">Target: <strong>37</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~10.2</strong></span>
+      </span>
+      <span class="acc-badge pace-amber">88.3% 🟢</span>
+      <span class="acc-arrow" id="arr-acc4">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc4">
+      <div class="acc-meta">QTD: 9 S1s | Target: 37 | Pro-rated: ~10.2 | Pacing: 88.3%</div>
+      <div class="acc-prose">
+        <p>On pace and relatively stable — Colin noted GSearch is "the brighter side of the coin" compared to Paid Social given current content availability. INQ→SAL is at 52.7% (vs. 57.5% Q1, –8.3% relative — within tolerance), and S0→S1 is at 77.4% (vs. 81.5% Q1, –5.0% — within tolerance). The one watchlist item is SAL→S0 at 37.0% vs. 47.3% in Q1 (–21.8% relative 🔴). GSearch leads typically signal strong intent, so missed follow-up is costly. If SAL→S0 recovers to Q1 rates, GSearch has clear headroom to close its remaining gap.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Paid Social -->
+  <div class="accordion" id="acc5">
+    <div class="acc-header" onclick="toggleAcc('acc5')">
+      <span class="acc-channel">Paid Social (LinkedIn + Meta)</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>5</strong></span>
+        <span class="acc-stat">Target: <strong>20</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~5.5</strong></span>
+      </span>
+      <span class="acc-badge pace-green">90.9% 🟢</span>
+      <span class="acc-arrow" id="arr-acc5">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc5">
+      <div class="acc-meta">QTD: 5 S1s (LI: 4, Meta: 1) | Target: 20 | Pro-rated: ~5.5 | Pacing: 90.9%</div>
+      <div class="acc-prose">
+        <p>Near pace for now. The content dry spell has constrained performance and Colin is considering a modest spend pullback when content isn't performing. LinkedIn SAL→S0 declined 42.7% relative (6.7% vs. 11.7% Q1 🔴), part of the cross-channel MDR pattern. However, LinkedIn S0→S1 has improved 30.3% relative (41.7% vs. 32.0% 🟢) — when LinkedIn leads do get meetings, they're converting better than in Q1. Plan to rebuild spend momentum in June as Forrester, IDC, and Super Agents content comes online. Meta remains very low volume (1 S1 QTD) but is not a primary concern at this stage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Tradeshow -->
+  <div class="accordion" id="acc6">
+    <div class="acc-header" onclick="toggleAcc('acc6')">
+      <span class="acc-channel">Tradeshow (incl. Pre-Event: Mktg Outbound)</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>20</strong></span>
+        <span class="acc-stat">Target: <strong>100</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~27.5</strong></span>
+      </span>
+      <span class="acc-badge pace-amber">72.7% 🟡</span>
+      <span class="acc-arrow" id="arr-acc6">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc6">
+      <div class="acc-meta">QTD: 20 S1s (Tradeshow: ~16, Pre-Event: ~4) | Target: 100 | Pro-rated: ~27.5 | Pacing: 72.7% 🟡</div>
+      <div class="acc-prose">
+        <p>Behind on pro-rated pace, but the S0 pipeline is the largest forward signal in the entire portfolio: 33 future Tradeshow S0s and 15 future Pre-Event S0s in Q2 (48 combined), implying approximately 17 incremental S1s at a 35% conversion rate. Top campaigns contributing QTD: Procurement Supply Chain Chicago (5 event + 2 pre-event = 7 S1s), procureTECH APAC (3), ISM World (3), Navan Navigate NYC (2 — Q2's first major AMER show), and Consero (2). Most top contributors are rolling over from Q1 events.</p>
+        <table style="width:100%;font-size:12px;border-collapse:collapse;margin:10px 0 12px;">
+          <tr style="background:#f8fafc;"><th style="padding:6px 8px;text-align:left;border-bottom:1px solid #e2e8f0;">Campaign</th><th style="padding:6px 8px;text-align:right;border-bottom:1px solid #e2e8f0;">Type</th><th style="padding:6px 8px;text-align:right;border-bottom:1px solid #e2e8f0;">S1s QTD</th></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;">Procurement-Supply-Chain-Chicago</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">Tradeshow</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">5</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;">Procurement-Supply-Chain-Chicago (Pre-Event)</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">Pre-Event</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">2</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;">PASA procureTECH</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">Tradeshow</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">3</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;">Navan Navigate '26 NYC</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">Tradeshow (Q2)</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">2</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;">ISM World</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">Tradeshow</td><td style="padding:5px 8px;text-align:right;border-bottom:1px solid #f1f5f9;">2</td></tr>
+          <tr><td style="padding:5px 8px;">Consero</td><td style="padding:5px 8px;text-align:right;">Tradeshow</td><td style="padding:5px 8px;text-align:right;">2</td></tr>
+        </table>
+        <p>The critical concern is SAL→S0 declining 37.7% relative vs. Q1 (8.6% vs. 13.8% 🔴). With 6,000+ SALs flowing through from event upload lists, even a small rate decline represents a large volume of missed meeting opportunities. This may indicate MDR bandwidth constraints during the heavy spring event season. Riley mentioned the team is piloting AI-driven personalized outreach — this has real potential to recover throughput. Riley also flagged that the event season effectively wraps in early June, after which Q2 will be "quite dry" on tradeshows. Converting the existing S0 pipeline before that window closes is the most important near-term action for this channel.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Corporate Event -->
+  <div class="accordion" id="acc7">
+    <div class="acc-header" onclick="toggleAcc('acc7')">
+      <span class="acc-channel">Corporate Event</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>4</strong></span>
+        <span class="acc-stat">Target: <strong>10</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~2.7</strong></span>
+      </span>
+      <span class="acc-badge pace-green">146.7% 🟢</span>
+      <span class="acc-arrow" id="arr-acc7">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc7">
+      <div class="acc-meta">QTD: 4 S1s | Target: 10 | Pro-rated: ~2.7 | Pacing: 146.7% 🟢</div>
+      <div class="acc-prose">
+        <p>Ahead of pro-rated pace. All 4 S1s are multi-attribution rollovers from Zip Forward Europe — several involve joint credit between marketing inbound and BDR/AE touches, which is exactly the outcome the team has been driving. Sean noted this is a great case study for demonstrating to Sales the value of promoting registration (BDR credit doesn't have to come at the expense of marketing attribution). Jen has identified 4–7 potential S1s from AI Summit NYC (two weeks out). INQ→SAL appears down sharply in rate data (24.2% vs. 56.8% Q1 🔴), but this is a methodological artifact — Corporate Event bulk invite lists create SAL volume near quarter-end that sits in the immature denominator, inflating the apparent rate in the prior period. Not a real quality signal.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Field Event -->
+  <div class="accordion" id="acc8">
+    <div class="acc-header" onclick="toggleAcc('acc8')">
+      <span class="acc-channel">Field Event</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>2</strong></span>
+        <span class="acc-stat">Target: <strong>18</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~4.9</strong></span>
+      </span>
+      <span class="acc-badge pace-red">40.7% 🔴</span>
+      <span class="acc-arrow" id="arr-acc8">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc8">
+      <div class="acc-meta">QTD: 2 S1s | Target: 18 | Pro-rated: ~4.9 | Pacing: 40.7% 🔴</div>
+      <div class="acc-prose">
+        <p>Behind pace, though the AI Roadshow is actively running through May and early June. Jen confirmed one pending S1 that Veronica is following up on this week. S0→S1 conversion declined 43.8% relative vs. Q1 (37.5% vs. 66.7% 🔴), though this figure comes from only 3 mature S0s in the cohort — directional, not definitive. 5 future Q2 S0s in pipeline. Field Event tends to batch-convert as events close out — similar to Tradeshow, the conversion curve is backloaded. With 2 S1s against an 18-S1 target, the channel needs to roughly 3× its current weekly pace through June to close the gap. This is achievable if the Roadshow delivers on its pipeline, but is the second-most-exposed channel alongside Webinar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Webinar -->
+  <div class="accordion" id="acc9">
+    <div class="acc-header" onclick="toggleAcc('acc9')">
+      <span class="acc-channel">Webinar</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>1</strong></span>
+        <span class="acc-stat">Target: <strong>18</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~4.9</strong></span>
+      </span>
+      <span class="acc-badge pace-red">20.4% 🔴</span>
+      <span class="acc-arrow" id="arr-acc9">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc9">
+      <div class="acc-meta">QTD: 1 S1 | Target: 18 | Pro-rated: ~4.9 | Pacing: 20.4% 🔴</div>
+      <div class="acc-prose">
+        <p>The largest absolute gap channel — but the forward pipeline is unusually strong for the stage of the quarter. The Contract Orchestration webinar this week drew approximately 120 attendees and follow-up is being processed now. Four more webinars are scheduled over the next two weeks, including one third-party hosted event. Riley noted that 1 S1 on the board is already an improvement on Q1's start. Two future Q2 S0s in queue. If current events convert at historical rates (~35% S0→S1), the next 3 weeks could produce 5–8 additional S1s, meaningfully narrowing the gap. Webinar is behind on paper but has clearer near-term catalysts than any other lagging channel.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Content Syndication -->
+  <div class="accordion" id="acc10">
+    <div class="acc-header" onclick="toggleAcc('acc10')">
+      <span class="acc-channel">Content Syndication</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>1</strong></span>
+        <span class="acc-stat">Target: <strong>5</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~1.4</strong></span>
+      </span>
+      <span class="acc-badge pace-amber">73.4% 🟡</span>
+      <span class="acc-arrow" id="arr-acc10">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc10">
+      <div class="acc-meta">QTD: 1 S1 | Target: 5 | Pro-rated: ~1.4 | Pacing: 73.4% 🟡</div>
+      <div class="acc-prose">
+        <p>Low volume, not a primary concern. On track to deliver against a modest 5-S1 target if volume stays consistent. Conversion rates are directional only given small sample sizes. New gated content from Forrester and IDC could boost syndication performance in June if those assets are included in syndication campaigns.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Other -->
+  <div class="accordion" id="acc11">
+    <div class="acc-header" onclick="toggleAcc('acc11')">
+      <span class="acc-channel">Other</span>
+      <span class="acc-stats">
+        <span class="acc-stat">QTD: <strong>13</strong></span>
+        <span class="acc-stat">Target: <strong>47</strong></span>
+        <span class="acc-stat">Pro-rated: <strong>~12.9</strong></span>
+      </span>
+      <span class="acc-badge pace-green">100.8% 🟢</span>
+      <span class="acc-arrow" id="arr-acc11">▲</span>
+    </div>
+    <div class="acc-body" id="body-acc11">
+      <div class="acc-meta">QTD: 13 S1s | Target: 47 | Pro-rated: ~12.9 | Pacing: 100.8% 🟢</div>
+      <div class="acc-prose">
+        <p>On pace superficially, but all 13 S1s returned a blank campaign name in the drill-down — no attribution data is available. These are real opportunities that converted, but the underlying campaign source is unresolved. This is a data quality issue that should be investigated: opps are converting through pathways that either aren't being tagged or aren't attaching to campaign records. Until attribution is resolved, it's unclear which channel should actually claim these 13 S1s — or whether the "Other" channel pacing reflects genuine unattributed performance or misclassified records that belong elsewhere.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================ -->
+<!-- SECTION 3: SEGMENT BREAKDOWN -->
+<!-- ================================================ -->
+<div class="section">
+  <div class="section-title">Section 3 — Segment Performance</div>
+  <div class="chart-wrap">
+    <div class="chart-title">QTD S1 Attainment by Segment (vs. Pro-rated Target)</div>
+    <div style="padding: 4px 0 8px;">
+
+      <!-- NAMER Commercial: 29/35.2 = 82.4% -->
+      <div class="prog-row">
+        <div class="prog-label">
+          <span class="prog-name">NAMER Commercial</span>
+          <span class="prog-nums">29 QTD / 128 target · 82.4%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-bar" style="width:82.4%;background:#f59e0b;"></div>
+          <div class="prog-marker" style="left:27.5%;"></div>
+        </div>
+      </div>
+
+      <!-- EMEA: 25/28.6 = 87.4% -->
+      <div class="prog-row">
+        <div class="prog-label">
+          <span class="prog-name">EMEA</span>
+          <span class="prog-nums">25 QTD / 104 target · 87.4%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-bar" style="width:87.4%;background:#f59e0b;"></div>
+          <div class="prog-marker" style="left:27.5%;"></div>
+        </div>
+      </div>
+
+      <!-- NAMER Strategic: 16/19.5 = 82.1% -->
+      <div class="prog-row">
+        <div class="prog-label">
+          <span class="prog-name">NAMER Strategic</span>
+          <span class="prog-nums">16 QTD / 71 target · 82.1%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-bar" style="width:82.1%;background:#f59e0b;"></div>
+          <div class="prog-marker" style="left:27.5%;"></div>
+        </div>
+      </div>
+
+      <!-- NAMER Key: 12/19.2 = 62.5% -->
+      <div class="prog-row">
+        <div class="prog-label">
+          <span class="prog-name">NAMER Key</span>
+          <span class="prog-nums">12 QTD / 70 target · 62.5% 🔴</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-bar" style="width:62.5%;background:#ef4444;"></div>
+          <div class="prog-marker" style="left:27.5%;"></div>
+        </div>
+      </div>
+
+      <!-- APAC: 8/10.7 = 74.8% -->
+      <div class="prog-row">
+        <div class="prog-label">
+          <span class="prog-name">APAC</span>
+          <span class="prog-nums">8 QTD / 39 target · 74.8%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-bar" style="width:74.8%;background:#f59e0b;"></div>
+          <div class="prog-marker" style="left:27.5%;"></div>
+        </div>
+      </div>
+
+      <!-- Total: 91/113.3 = 80.4% -->
+      <div class="prog-row" style="margin-top:16px;padding-top:12px;border-top:1px solid #e2e8f0;">
+        <div class="prog-label">
+          <span class="prog-name" style="font-weight:800;">Total</span>
+          <span class="prog-nums" style="font-weight:700;">91 QTD / 412 target · 80.4%</span>
+        </div>
+        <div class="prog-track" style="height:13px;">
+          <div class="prog-bar" style="width:80.4%;background:#f59e0b;"></div>
+          <div class="prog-marker" style="left:27.5%;height:19px;top:-3px;"></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:8px;">Gray line = expected pace at 27.5% of quarter elapsed. Bar = QTD as % of full Q2 target.</div>
+    </div>
+  </div>
+  <div class="narrative">
+    <p>NAMER Commercial (29 S1s, 82.4% paced) and NAMER Strategic (16, 82.1%) are both running slightly below pro-rated pace but within recoverable range. Both have Tradeshow and Organic Demo pipeline to draw from, and the content wave in late May/June should provide additional lift. EMEA is the relative bright spot at 87.4%, tracking close to its internal forecast of 107 (which intentionally exceeds the 104 target) — the Zip Forward Europe multi-attribution wins are evidence of strong sales/marketing collaboration there.</p>
+    <p>NAMER Key (12 S1s, 62.5%) is the most urgent concern. With a 70-S1 target and 12 QTD, the segment needs approximately 16 more S1s than current pace would produce just to reach its pro-rated target by end of June. There is no single dominant driver — the gap is spread across channels. APAC (8 S1s, 74.8%) is also flagged: the segment has limited future Tradeshow S0s and depends heavily on rolling-over Q1 event results, which are largely exhausted. Only 1 future APAC S0 was found in Q2 pipeline.</p>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SECTION 4: CONVERSION RATES -->
+<!-- ================================================ -->
+<div class="section">
+  <div class="section-title">Section 4 — Conversion Rate Snapshot (90-Day Rolling)</div>
+  <div class="alert-banner alert-red">
+    <strong>Cross-channel headline:</strong> SAL→S0 is declining across five high-volume channels simultaneously — Tradeshow (–38%), GSearch (–22%), LinkedIn (–43%), Field Event (–21%), Organic Content (–37%). This is a systemic pattern, not channel-specific, and may indicate MDR throughput constraints, sequencing gaps, or lead follow-up speed issues. S0→S1 rates are largely holding, suggesting the bottleneck is meeting-scheduling, not deal quality.
+  </div>
+  <div class="chart-wrap" style="overflow-x:auto;">
+    <table class="cvr-table">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>INQ</th>
+          <th>SAL</th>
+          <th>S0</th>
+          <th>S1</th>
+          <th>INQ→SAL</th>
+          <th>vs. Q1</th>
+          <th>SAL→S0</th>
+          <th>vs. Q1</th>
+          <th>S0→S1</th>
+          <th>vs. Q1</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Organic: Demo/Walkthrough</strong></td>
+          <td>1,062</td><td>575</td><td>166</td><td>105</td>
+          <td>64.8%</td><td class="flag-flat">➡️ 0%</td>
+          <td>41.2%</td><td class="flag-flat">➡️ –6.6%</td>
+          <td>69.1%</td><td class="flag-flat">➡️ –5.3%</td>
+        </tr>
+        <tr>
+          <td><strong>Tradeshow</strong></td>
+          <td>3,832</td><td>2,513</td><td>145</td><td>44</td>
+          <td>83.3%</td><td class="flag-flat">➡️ –5.3%</td>
+          <td>8.6%</td><td class="flag-red">🔴 –37.7%</td>
+          <td>50.0%</td><td class="flag-flat">➡️ –7.7%</td>
+        </tr>
+        <tr>
+          <td><strong>Paid: GSearch</strong></td>
+          <td>292</td><td>137</td><td>40</td><td>33</td>
+          <td>52.7%</td><td class="flag-flat">➡️ –8.3%</td>
+          <td>37.0%</td><td class="flag-red">🔴 –21.8%</td>
+          <td>77.4%</td><td class="flag-flat">➡️ –5.0%</td>
+        </tr>
+        <tr>
+          <td><strong>Email</strong></td>
+          <td>571</td><td>229</td><td>20</td><td>14</td>
+          <td>46.0%</td><td class="flag-flat">➡️ +0.2%</td>
+          <td>11.0%</td><td class="flag-flat">➡️ –2.7%</td>
+          <td>68.8%</td><td class="flag-green">🟢 +14.7%</td>
+        </tr>
+        <tr>
+          <td><strong>Pre-Event: Mktg Outbound</strong></td>
+          <td>10,333</td><td>5,724</td><td>44</td><td>14</td>
+          <td>66.2%</td><td class="flag-red">🔴 –20.6%</td>
+          <td>1.0%</td><td class="flag-flat">➡️ +11.1%</td>
+          <td>70.6%</td><td class="flag-amber">🟡 –11.8%</td>
+        </tr>
+        <tr>
+          <td><strong>Corporate Event</strong></td>
+          <td>316</td><td>64</td><td>25</td><td>10</td>
+          <td>24.2%</td><td class="flag-warn">⚠️ artifact</td>
+          <td>49.0%</td><td class="flag-warn">⚠️ artifact</td>
+          <td>36.4%</td><td class="flag-amber">🟡 –15.1%</td>
+        </tr>
+        <tr>
+          <td><strong>Paid: LinkedIn</strong></td>
+          <td>504</td><td>317</td><td>17</td><td>7</td>
+          <td>72.5%</td><td class="flag-flat">➡️ –0.5%</td>
+          <td>6.7%</td><td class="flag-red">🔴 –42.7%</td>
+          <td>41.7%</td><td class="flag-green">🟢 +30.3%</td>
+        </tr>
+        <tr>
+          <td><strong>Field Event</strong></td>
+          <td>985</td><td>259</td><td>13</td><td>4</td>
+          <td>30.7%</td><td class="flag-flat">➡️ –7.3%</td>
+          <td>6.5%</td><td class="flag-red">🔴 –20.7%</td>
+          <td>37.5%</td><td class="flag-red">🔴 –43.8%</td>
+        </tr>
+        <tr>
+          <td><strong>Organic: Content</strong></td>
+          <td>1,285</td><td>561</td><td>7</td><td>2</td>
+          <td>51.4%</td><td class="flag-flat">➡️ +6.6%</td>
+          <td>1.7%</td><td class="flag-red">🔴 –37.0%</td>
+          <td>40.0%</td><td class="flag-red">🔴 –29.9%</td>
+        </tr>
+        <tr>
+          <td><strong>Content Syndication</strong></td>
+          <td>5,625</td><td>666</td><td>4</td><td>3</td>
+          <td>12.0%</td><td class="flag-flat">➡️ +2.6%</td>
+          <td>0.6%</td><td class="flag-warn">⚠️ low vol</td>
+          <td>66.7%</td><td class="flag-green">🟢 +33.3%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:#94a3b8;margin-top:8px;">Current period: 90-day rolling window ending May 26. Q1 baseline: 90-day window ending Apr 30. Relative change = (current − prior) / prior × 100. ⚠️ = low volume or known artifact. Maturity-buffered denominators used for all rates.</div>
+  </div>
+  <div class="narrative">
+    <p><strong>What to investigate:</strong> The Tradeshow SAL→S0 decline (–37.7%) is the highest-priority flag given volume — with 6,000+ Tradeshow SALs in the 90-day window, even a 5pp rate drop represents hundreds of missed meeting-scheduling opportunities. GSearch (–21.8%) is next: high-intent inbound leads not reaching S0 is costly. LinkedIn's SAL→S0 decline (–42.7%) is partially offset by a strong S0→S1 improvement (+30.3%), suggesting the leads that do convert are higher quality, but the meeting-scheduling step needs attention.</p>
+    <p>Field Event S0→S1 at –43.8% (🔴) is based on 3 mature S0s, so treat as directional. Organic Content both stages are red, but again — very small sample from a channel that's been dry. These rates are expected to normalize as content volume returns. Pre-Event INQ→SAL at –20.6% may reflect larger or less targeted invite lists for spring events; worth reviewing list quality criteria for upcoming campaigns.</p>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SECTION 5: S0 PIPELINE HEALTH -->
+<!-- ================================================ -->
+<div class="section">
+  <div class="section-title">Section 5 — S0 Pipeline Health (Q2 FY27 S0s only)</div>
+
+  <div class="s0-kpi-row">
+    <div class="s0-kpi">
+      <div class="s0-kpi-label label-future">Future S0s 📅</div>
+      <div class="s0-kpi-val" style="color:#0369a1;">71</div>
+      <div class="s0-kpi-sub">Meeting scheduled after today · ~25 S1s expected at 35% CVR</div>
+    </div>
+    <div class="s0-kpi">
+      <div class="s0-kpi-label label-past">Past/Stale S0s ⚠️</div>
+      <div class="s0-kpi-val" style="color:#b91c1c;">44</div>
+      <div class="s0-kpi-sub">Meeting date passed, no S1. Need disposition review.</div>
+    </div>
+    <div class="s0-kpi">
+      <div class="s0-kpi-label label-none">No Date Set</div>
+      <div class="s0-kpi-val" style="color:#6b7280;">6</div>
+      <div class="s0-kpi-sub">Organic Demo: 5, Webinar: 1. Routing/entry issue?</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Q2 Open S0s by Channel (Future / Past-due / No Date)</div>
+    <canvas id="s0Chart" height="120"></canvas>
+    <div style="font-size:11px;color:#94a3b8;margin-top:8px;">Q2-only S0s (S0_DATE ≥ May 1). All-time stale records (thousands, back to 2022) are excluded from this view — they are a separate data hygiene issue, not a current performance signal.</div>
+  </div>
+
+  <div class="narrative">
+    <p><strong>Tradeshow leads the forward pipeline</strong> with 33 future S0s — the single largest near-term S1 source, consistent with the May 19 discussion where the team expected 20–30 S1s from the existing S0 queue. Pre-Event adds 15 more (events in early June). Combined Tradeshow + Pre-Event forward estimate: ~17 S1s at 35% CVR.</p>
+    <p><strong>Organic Demo past-due rate is flagged:</strong> 17 of 29 Q2 Organic Demo S0s are already past their scheduled meeting date, with 5 more showing no meeting date. For a channel built around direct demo requests, this suggests MDR follow-up gaps — people who requested a demo in May where the meeting didn't happen or wasn't logged. A targeted pass on May-created Organic Demo SALs to confirm meeting disposition is recommended.</p>
+    <p><strong>Data hygiene note (historical archive):</strong> The all-time S0 query (unrestricted by date) shows thousands of stale records: Organic Demo (591 past-due, oldest Feb 2022), Paid LinkedIn (447 past-due), Tradeshow (298). These are legacy records that were never closed out. They don't affect current-quarter performance but inflate the system's apparent pipeline and make trend monitoring harder. A data cleanup initiative to close or archive pre-2026 S0s would improve reporting accuracy.</p>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SECTION 6: ALL-MOTIONS ATTAINMENT -->
+<!-- ================================================ -->
+<div class="section">
+  <div class="section-title">Section 6 — Overall S1 Goal Attainment (All Motions)</div>
+  <div class="s6-note">
+    <strong>FYI section — less actionable for marketing.</strong> This section provides visibility into company-wide pipeline performance across all four motions (Inbound, Outbound-BDR, Outbound-AE, Channel) to maintain alignment with Sales. Marketing's 412-S1 goal is the Inbound subset only. The company-wide goal is 1,551 (sum of individual motions). Do not use this section to assess marketing attainment — use Sections 1–5 for that. Note: Inbound actuals here (46) reflect single-source attribution from <code>PIPELINE_GENERATION_ATTAINMENT</code> and differ from the marketing multi-touch count (91) in Section 1 — they are different attribution models.
+  </div>
+
+  <div class="motion-cards">
+    <div class="motion-card">
+      <div class="motion-label">Inbound (Mktg)</div>
+      <div class="motion-val">46</div>
+      <div class="motion-goal">Q2 Goal: 414 · Pro-rated: ~114 · <span style="color:#b91c1c;font-weight:600;">40.4% paced</span></div>
+    </div>
+    <div class="motion-card">
+      <div class="motion-label">Outbound — BDR</div>
+      <div class="motion-val">79</div>
+      <div class="motion-goal">Q2 Goal: 696 · Pro-rated: ~191 · <span style="color:#b91c1c;font-weight:600;">41.4% paced</span></div>
+    </div>
+    <div class="motion-card">
+      <div class="motion-label">Outbound — AE</div>
+      <div class="motion-val">46</div>
+      <div class="motion-goal">Q2 Goal: 390 · Pro-rated: ~107 · <span style="color:#b91c1c;font-weight:600;">43.0% paced</span></div>
+    </div>
+    <div class="motion-card">
+      <div class="motion-label">Channel</div>
+      <div class="motion-val">11</div>
+      <div class="motion-goal">Q2 Goal: 51 · Pro-rated: ~14 · <span style="color:#f59e0b;font-weight:600;">78.6% paced</span></div>
+    </div>
+  </div>
+
+  <div class="chart-wrap" style="overflow-x:auto;">
+    <div class="chart-title">Actuals vs. Goals by Segment × Motion (Q2 FY27 QTD)</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Segment</th>
+          <th>Inb Act</th><th>Inb Goal</th>
+          <th>BDR Act</th><th>BDR Goal</th>
+          <th>AE Act</th><th>AE Goal</th>
+          <th>Ch Act</th><th>Ch Goal</th>
+          <th>Total S1s</th><th>Q2 Goal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>NAMER Commercial</td><td>20</td><td>129</td><td>22</td><td>126</td><td>21</td><td>138</td><td>6</td><td>18</td><td>69</td><td>411</td></tr>
+        <tr><td>EMEA</td><td>12</td><td>105</td><td>27</td><td>177</td><td>10</td><td>78</td><td>2</td><td>9</td><td>51</td><td>369</td></tr>
+        <tr><td>NAMER Key</td><td>8</td><td>69</td><td>17</td><td>159</td><td>8</td><td>90</td><td>1</td><td>9</td><td>34</td><td>327</td></tr>
+        <tr><td>NAMER Strategic</td><td>2</td><td>72</td><td>13</td><td>210</td><td>6</td><td>48</td><td>1</td><td>6</td><td>22</td><td>336</td></tr>
+        <tr><td>APAC</td><td>4</td><td>39</td><td>—</td><td>24</td><td>1</td><td>36</td><td>1</td><td>9</td><td>6</td><td>108</td></tr>
+        <tr class="total-row"><td>Total</td><td>46</td><td>414</td><td>79</td><td>696</td><td>46</td><td>390</td><td>11</td><td>51</td><td>182</td><td>1,551</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:#94a3b8;margin-top:8px;">De-duplicated total S1s from <code>PIPELINE_GENERATION_ATTAINMENT</code> (QUALIFIES_FOR_TOTAL_NO_OVERLAP = TRUE, Core only). Q2 ARR goals not yet loaded in this table — GTM Ops to confirm when populated. Benchmark at 27.5% elapsed: expect ~27.5% of full Q2 goal to be completed.</div>
+  </div>
+
+  <div class="narrative">
+    <p>All four motions are running below their individually pro-rated goals at 27.5% of the quarter — pacing figures of 40–43% reflect single-source de-duplication and early-quarter conversion lag. Channel motion (78.6% paced) is the strongest performer, driven by partner and channel-attributed deals. OB-BDR leads in raw volume at 79 QTD, with EMEA BDR (27 S1s) the standout across all segments. NAMER Strategic Inbound stands out as the weakest — only 2 Inbound S1s in single-source attribution — though the OB-BDR motion (13 S1s) is partially compensating. APAC shows no OB-BDR attributed S1s in the data, which may indicate BDR coverage gaps or attribution not yet flowing through for the APAC segment.</p>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;padding:24px 0;font-size:11px;color:#94a3b8;border-top:1px solid #e2e8f0;margin-top:8px;">
+  Marketing Weekly Review · Week 4 · Q2 FY27 · May 26, 2026 · Prepared by Claude on behalf of Sean Kennedy
+</div>
+
+</div><!-- end .page -->
+</div><!-- end #pw-content -->
+
+<script>
+// Password gate
+function checkPw() {
+  var val = document.getElementById('pw-input').value;
+  if (val === 'zipmktg!27') {
+    document.getElementById('pw-gate').style.display = 'none';
+    document.getElementById('pw-content').style.display = 'block';
+    renderCharts();
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.getElementById('pw-input').focus();
+
+// Accordion toggle
+function toggleAcc(id) {
+  var body = document.getElementById('body-' + id);
+  var arrow = document.getElementById('arr-' + id);
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    arrow.textContent = '▲';
+  } else {
+    body.style.display = 'none';
+    arrow.textContent = '▼';
+  }
+}
+
+// Charts rendered only after password
+function renderCharts() {
+  // Weekly S1 Trend Chart
+  var wCtx = document.getElementById('weeklyChart').getContext('2d');
+  new Chart(wCtx, {
+    type: 'bar',
+    data: {
+      labels: ['W1 (May 1–3, partial)', 'W2 (May 4–10)', 'W3 (May 11–17)', 'W4 (May 18–24)', 'W5 (May 25–26, partial)'],
+      datasets: [{
+        label: 'S1s',
+        data: [4, 20, 33, 34, 0],
+        backgroundColor: ['rgba(99,102,241,0.5)', '#6366f1', '#6366f1', '#6366f1', 'rgba(99,102,241,0.3)'],
+        borderColor: ['#6366f1','#4f46e5','#4f46e5','#4f46e5','#6366f1'],
+        borderWidth: 1,
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel: function(ctx) {
+              if (ctx.dataIndex === 4) return 'Partial — just started';
+              return '';
+            }
+          }
+        },
+        annotation: {}
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 50,
+          ticks: { stepSize: 10, font: { size: 11 } },
+          grid: { color: '#f1f5f9' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // S0 Pipeline Health Stacked Bar
+  var s0Ctx = document.getElementById('s0Chart').getContext('2d');
+  new Chart(s0Ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Tradeshow','Pre-Event','Organic Demo','Other','Field Event','Organic Content','Webinar','Email','LinkedIn','Corp Event'],
+      datasets: [
+        {
+          label: 'Future 📅',
+          data: [33, 15, 7, 3, 5, 4, 1, 1, 1, 1],
+          backgroundColor: '#3b82f6',
+          borderRadius: { topLeft: 4, topRight: 4 }
+        },
+        {
+          label: 'Past-due ⚠️',
+          data: [5, 4, 17, 10, 1, 1, 1, 1, 1, 0],
+          backgroundColor: '#ef4444'
+        },
+        {
+          label: 'No Date',
+          data: [0, 0, 5, 0, 0, 0, 1, 0, 0, 0],
+          backgroundColor: '#94a3b8'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { size: 11 }, boxWidth: 14, padding: 12 }
+        }
+      },
+      scales: {
+        x: { stacked: true, ticks: { font: { size: 11 } }, grid: { display: false } },
+        y: { stacked: true, ticks: { stepSize: 5, font: { size: 11 } }, grid: { color: '#f1f5f9' } }
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
